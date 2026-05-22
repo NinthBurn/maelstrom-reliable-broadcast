@@ -39,7 +39,7 @@ upon event 〈 P, Init 〉 do
 
 upon event 〈 Timeout 〉 do
 	forall p ∈ Π do
-		if (p  ∈ alive) ∧ (p  ∈ detected) then
+		if (p NOT ∈ alive) ∧ (p NOT ∈ detected) then
 			detected := detected ∪ {p};
 			trigger 〈 P, Crash | p 〉;
 		
@@ -90,10 +90,10 @@ upon event 〈 rb, Broadcast | m 〉 do
 	trigger 〈 beb, Broadcast | [DATA, self, m] 〉;
 
 upon event 〈 beb, Deliver | p, [DATA, s, m] 〉 do
-	if m NOT IN from[s] then
+	if m NOT ∈ from[s] then
 		trigger 〈 rb, Deliver | s, m 〉;
 		from[s] := from[s] ∪ {m};
-		if s NOT IN correct then
+		if s NOT ∈ correct then
 			trigger 〈 beb, Broadcast | [DATA, s, m] 〉;
 
 upon event 〈 P, Crash | p 〉 do
